@@ -1,130 +1,137 @@
 <?php
 
+declare(strict_types=1);
+/**
+ * This file is part of DTM-PHP.
+ *
+ * @license  https://github.com/dtm-php/dtm-sample/blob/master/LICENSE
+ */
 namespace App\Controller;
 
 use DtmClient\Api\ApiInterface;
 use DtmClient\TCC;
+use DtmClient\TransContext;
+use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\PostMapping;
+use Hyperf\HttpServer\Contract\ResponseInterface;
+use Throwable;
 
 #[Controller(prefix: '/tcc')]
 class TccController extends AbstractController
 {
-    protected TCC $TCC;
+    #[Inject]
+    protected TCC $tcc;
 
-protected  ApiInterface $api;
+    #[Inject]
+    protected ApiInterface $api;
 
-    public function __construct(TCC $TCC, ApiInterface $api)
-    {
-        parent::__construct();
-        $this->TCC = $TCC;
-        $this->api = $api;
-    }
-
-
-    #[GetMapping(path: "successCase")]
+    #[GetMapping(path: 'successCase')]
     public function successCase()
     {
-        $gid = $this->TCC->generateGid();
-        $this->TCC->tccGlobalTransaction($gid, function (TCC $TCC) {
-            $TCC->callBranch([
-                'trans_name' => 'trans_A'
-            ], 'http://127.0.0.1:9502/tcc/transA/try', 'http://127.0.0.1:9502/tcc/transA/confirm', 'http://host.docker.internal:9502/tcc/transA/cancel');
-
-            $TCC->callBranch([
-                'trans_name' => 'trans_B'
-            ], 'http://127.0.0.1:9502/tcc/transB/try', 'http://127.0.0.1:9502/tcc/transB/confirm', 'http://host.docker.internal:9502/tcc/transB/cancel');
-            // this is query trans by gid demo
-            $result = $this->TCC->tccFromQuery();
-            var_dump($result);
-        });
+        try {
+            $this->tcc->globalTransaction(function (TCC $tcc) {
+                $tcc->callBranch(
+                    ['trans_name' => 'trans_A'],
+                    $this->serviceUri . '/tcc/transA/try',
+                    $this->serviceUri . '/tcc/transA/confirm',
+                    $this->serviceUri . '/tcc/transA/cancel'
+                );
+                $tcc->callBranch(
+                    ['trans_name' => 'trans_B'],
+                    $this->serviceUri . '/tcc/transB/try',
+                    $this->serviceUri . '/tcc/transB/confirm',
+                    $this->serviceUri . '/tcc/transB/cancel'
+                );
+            });
+        } catch (Throwable $e) {
+        }
+        return TransContext::getGid();
     }
 
-    #[GetMapping(path: "query_all")]
+    #[GetMapping(path: 'query_all')]
     public function queryAllCase()
     {
         $result = $this->api->queryAll(['last_id' => '']);
         var_dump($result);
     }
 
-    #[GetMapping(path: "rollbackCase")]
+    #[GetMapping(path: 'rollbackCase')]
     public function rollbackCase()
     {
-        $gid = $this->TCC->generateGid();
-        $this->TCC->tccGlobalTransaction($gid, function (TCC $TCC) {
-            $TCC->callBranch([
-                'trans_name' => 'trans_A'
-            ], 'http://127.0.0.1:9502/tcc/transA/try', 'http://127.0.0.1:9502/tcc/transA/confirm', 'http://127.0.0.1:9502/tcc/transA/cancel');
+        try {
+            $this->tcc->globalTransaction(function (TCC $tcc) {
+                $tcc->callBranch(
+                    ['trans_name' => 'trans_A'],
+                    $this->serviceUri . '/tcc/transA/try',
+                    $this->serviceUri . '/tcc/transA/confirm',
+                    $this->serviceUri . '/tcc/transA/cancel'
+                );
 
-            $TCC->callBranch([
-                'trans_name' => 'trans_B'
-            ], 'http://127.0.0.1:9502/tcc/transB/try/fail', 'http://127.0.0.1:9502/tcc/transB/confirm', 'http://127.0.0.1:9502/tcc/transB/cancel');
-
-        });
+                $tcc->callBranch(
+                    ['trans_name' => 'trans_B'],
+                    $this->serviceUri . '/tcc/transB/try/fail',
+                    $this->serviceUri . '/tcc/transB/confirm',
+                    $this->serviceUri . '/tcc/transB/cancel'
+                );
+            });
+        } catch (Throwable $exception) {
+            // Do Nothing
+        }
     }
 
-    #[PostMapping(path: "transA/try")]
-    public function TransATry()
+    #[PostMapping(path: 'transA/try')]
+    public function transATry(): array
     {
-        var_dump('trans_A_try');
         return [
-            'dtm_result' => 'SUCCESS'
+            'dtm_result' => 'SUCCESS',
         ];
     }
 
-    #[PostMapping(path: "transA/confirm")]
-    public function TransAConfirm()
+    #[PostMapping(path: 'transA/confirm')]
+    public function transAConfirm(): array
     {
-        var_dump('trans_A_confirm');
         return [
-            'dtm_result' => 'SUCCESS'
+            'dtm_result' => 'SUCCESS',
         ];
     }
 
-    #[PostMapping(path: "transA/cancel")]
-    public function TransACancel()
+    #[PostMapping(path: 'transA/cancel')]
+    public function transACancel(): array
     {
-        var_dump('trans_A_cancel');
         return [
-            'dtm_result' => 'SUCCESS'
+            'dtm_result' => 'SUCCESS',
         ];
     }
 
-    #[PostMapping(path: "transB/try")]
-    public function TransBTry()
+    #[PostMapping(path: 'transB/try')]
+    public function transBTry(): array
     {
-        var_dump('trans_B_try');
-
         return [
-            'dtm_result' => 'SUCCESS'
+            'dtm_result' => 'SUCCESS',
         ];
     }
 
-    #[PostMapping(path: "transB/try/fail")]
-    public function TransBTryFail()
+    #[PostMapping(path: 'transB/try/fail')]
+    public function transBTryFail(ResponseInterface $response)
     {
-        var_dump('trans_B_try_fail');
-        return $this->response->withStatus(409);
+        return $response->withStatus(409);
     }
 
-    #[PostMapping(path: "transB/confirm")]
-    public function transBConfirm()
+    #[PostMapping(path: 'transB/confirm')]
+    public function transBConfirm(): array
     {
-        var_dump('trans_B_confirm');
         return [
-            'dtm_result' => 'SUCCESS'
+            'dtm_result' => 'SUCCESS',
         ];
     }
 
-    #[PostMapping(path: "transB/cancel")]
-    public function transBCancel()
+    #[PostMapping(path: 'transB/cancel')]
+    public function transBCancel(): array
     {
-        var_dump('trans_B_cancel');
         return [
-            'dtm_result' => 'SUCCESS'
+            'dtm_result' => 'SUCCESS',
         ];
     }
-
-
 }

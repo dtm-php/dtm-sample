@@ -18,8 +18,6 @@ class AbstractSagaController extends AbstractController
 
     protected const TRANS_IN_ID = 2;
 
-    protected string $serviceUri = 'http://127.0.0.1:9502';
-
     protected int $barrierId = 0;
 
     protected function buildPayload(int $amount): array
