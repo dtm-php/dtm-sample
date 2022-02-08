@@ -10,6 +10,7 @@ namespace App\Controller;
 
 use DtmClient\Constants\Branch;
 use DtmClient\TransContext;
+use JetBrains\PhpStorm\ArrayShape;
 
 class AbstractSagaController extends AbstractController
 {
@@ -19,6 +20,8 @@ class AbstractSagaController extends AbstractController
 
     protected string $serviceUri = 'http://127.0.0.1:9502';
 
+    protected int $barrierId = 0;
+
     protected function buildPayload(int $amount): array
     {
         return [
@@ -27,6 +30,12 @@ class AbstractSagaController extends AbstractController
             'transOutResult' => '',
             'store' => '',
         ];
+    }
+
+    protected function initAccountAmount(int $amount): void
+    {
+        $this->redis->set($this->getRedisAccountKey(self::TRANS_IN_ID), $amount);
+        $this->redis->set($this->getRedisAccountKey(self::TRANS_OUT_ID), $amount);
     }
 
     protected function redisCheckAdjustAmount(string $key, int $amount, int $barrierExpire): bool|string

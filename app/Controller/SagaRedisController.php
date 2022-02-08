@@ -22,14 +22,10 @@ class SagaRedisController extends AbstractSagaController
     #[Inject]
     protected Redis $redis;
 
-    protected int $barrierId = 0;
-
     #[RequestMapping(path: 'successCase')]
     public function successCase(Saga $saga): string
     {
-        // Init Accounts
-        $this->redis->set($this->getRedisAccountKey(self::TRANS_IN_ID), '100');
-        $this->redis->set($this->getRedisAccountKey(self::TRANS_OUT_ID), '100');
+        $this->initAccountAmount(100);
 
         $payload = $this->buildPayload(50);
         $saga->init();
@@ -42,14 +38,30 @@ class SagaRedisController extends AbstractSagaController
     #[RequestMapping(path: 'rollbackCase')]
     public function rollbackCase(Saga $saga): string
     {
-        // Init Accounts
-        $this->redis->set($this->getRedisAccountKey(self::TRANS_IN_ID), '20');
-        $this->redis->set($this->getRedisAccountKey(self::TRANS_OUT_ID), '20');
+        $this->initAccountAmount(20);
 
         $payload = $this->buildPayload(50);
         $saga->init();
         $saga->add($this->serviceUri . '/saga/redis/transOut', $this->serviceUri . '/saga/redis/transOutCompensate', $payload);
         $saga->add($this->serviceUri . '/saga/redis/transIn', $this->serviceUri . '/saga/redis/transInCompensate', $payload);
+        $saga->submit();
+        return 'Submitted';
+    }
+
+    #[RequestMapping(path: 'concurrentCase')]
+    public function concurrentCase(Saga $saga): string
+    {
+        $this->initAccountAmount(100);
+
+        $payload = $this->buildPayload(50);
+        $saga->init();
+        $saga->add($this->serviceUri . '/saga/redis/transOut', $this->serviceUri . '/saga/redis/transOutCompensate', $payload);
+        $saga->add($this->serviceUri . '/saga/redis/transOut', $this->serviceUri . '/saga/redis/transOutCompensate', $payload);
+        $saga->add($this->serviceUri . '/saga/redis/transIn', $this->serviceUri . '/saga/redis/transInCompensate', $payload);
+        $saga->add($this->serviceUri . '/saga/redis/transIn', $this->serviceUri . '/saga/redis/transInCompensate', $payload);
+        $saga->enableConcurrent();
+        $saga->addBranchOrder(2, [0, 1]);
+        $saga->addBranchOrder(3, [0, 1]);
         $saga->submit();
         return 'Submitted';
     }
