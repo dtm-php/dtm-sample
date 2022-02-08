@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use DtmClient\Api\ApiInterface;
 use DtmClient\TCC;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
@@ -12,10 +13,13 @@ class TccController extends AbstractController
 {
     protected TCC $TCC;
 
-    public function __construct(TCC $TCC)
+protected  ApiInterface $api;
+
+    public function __construct(TCC $TCC, ApiInterface $api)
     {
         parent::__construct();
         $this->TCC = $TCC;
+        $this->api = $api;
     }
 
 
@@ -31,7 +35,17 @@ class TccController extends AbstractController
             $TCC->callBranch([
                 'trans_name' => 'trans_B'
             ], 'http://127.0.0.1:9502/tcc/transB/try', 'http://127.0.0.1:9502/tcc/transB/confirm', 'http://host.docker.internal:9502/tcc/transB/cancel');
+            // this is query trans by gid demo
+            $result = $this->TCC->tccFromQuery();
+            var_dump($result);
         });
+    }
+
+    #[GetMapping(path: "query_all")]
+    public function queryAllCase()
+    {
+        $result = $this->api->queryAll(['last_id' => '']);
+        var_dump($result);
     }
 
     #[GetMapping(path: "rollbackCase")]
@@ -46,6 +60,7 @@ class TccController extends AbstractController
             $TCC->callBranch([
                 'trans_name' => 'trans_B'
             ], 'http://127.0.0.1:9502/tcc/transB/try/fail', 'http://127.0.0.1:9502/tcc/transB/confirm', 'http://127.0.0.1:9502/tcc/transB/cancel');
+
         });
     }
 
