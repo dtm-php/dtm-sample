@@ -10,28 +10,35 @@ use Hyperf\HttpServer\Annotation\PostMapping;
 #[Controller(prefix: '/tcc')]
 class TccController extends AbstractController
 {
+    protected TCC $TCC;
+
+    public function __construct(TCC $TCC)
+    {
+        parent::__construct();
+        $this->TCC = $TCC;
+    }
+
+
     #[GetMapping(path: "successCase")]
     public function successCase()
     {
-        $tcc = make(TCC::class);
-        $gid = $tcc->generateGid();
-        $tcc->tccGlobalTransaction($gid, function (TCC $TCC) {
+        $gid = $this->TCC->generateGid();
+        $this->TCC->tccGlobalTransaction($gid, function (TCC $TCC) {
             $TCC->callBranch([
                 'trans_name' => 'trans_A'
-            ], 'http://127.0.0.1:9502/tcc/transA/try', 'http://127.0.0.1:9502/tcc/transA/confirm', 'http://127.0.0.1:9502/tcc/transA/cancel');
+            ], 'http://127.0.0.1:9502/tcc/transA/try', 'http://127.0.0.1:9502/tcc/transA/confirm', 'http://host.docker.internal:9502/tcc/transA/cancel');
 
             $TCC->callBranch([
                 'trans_name' => 'trans_B'
-            ], 'http://127.0.0.1:9502/tcc/transB/try', 'http://127.0.0.1:9502/tcc/transB/confirm', 'http://127.0.0.1:9502/tcc/transB/cancel');
+            ], 'http://127.0.0.1:9502/tcc/transB/try', 'http://127.0.0.1:9502/tcc/transB/confirm', 'http://host.docker.internal:9502/tcc/transB/cancel');
         });
     }
 
     #[GetMapping(path: "rollbackCase")]
     public function rollbackCase()
     {
-        $tcc = make(TCC::class);
-        $gid = $tcc->generateGid();
-        $tcc->tccGlobalTransaction($gid, function (TCC $TCC) {
+        $gid = $this->TCC->generateGid();
+        $this->TCC->tccGlobalTransaction($gid, function (TCC $TCC) {
             $TCC->callBranch([
                 'trans_name' => 'trans_A'
             ], 'http://127.0.0.1:9502/tcc/transA/try', 'http://127.0.0.1:9502/tcc/transA/confirm', 'http://127.0.0.1:9502/tcc/transA/cancel');
