@@ -39,7 +39,6 @@ class TccController extends AbstractController
             $TCC->callBranch([
                 'trans_name' => 'trans_B'
             ], 'http://127.0.0.1:9502/tcc/transB/try/fail', 'http://127.0.0.1:9502/tcc/transB/confirm', 'http://127.0.0.1:9502/tcc/transB/cancel');
-            throw new \Exception('fail');
         });
     }
 
@@ -74,6 +73,7 @@ class TccController extends AbstractController
     public function TransBTry()
     {
         var_dump('trans_B_try');
+
         return [
             'dtm_result' => 'SUCCESS'
         ];
@@ -83,9 +83,7 @@ class TccController extends AbstractController
     public function TransBTryFail()
     {
         var_dump('trans_B_try_fail');
-        return [
-            'dtm_result' => 'ERROR'
-        ];
+        return $this->response->withStatus(409);
     }
 
     #[PostMapping(path: "transB/confirm")]
