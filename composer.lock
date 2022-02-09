@@ -344,10 +344,11 @@
             "dist": {
                 "type": "path",
                 "url": "../dtm-client",
-                "reference": "06488b18cafd3ece326a55158e1c1540420bafdf"
+                "reference": "0326921a7954f0e7e0a1066c78530cd4c9d55a6a"
             },
             "require": {
                 "hyperf/config": "^2.2",
+                "hyperf/db": "^2.2",
                 "hyperf/guzzle": "^2.2",
                 "php": ">=8.0",
                 "psr/http-server-middleware": "^1.0"
@@ -1177,6 +1178,65 @@
                 "source": "https://github.com/hyperf/hyperf"
             },
             "time": "2022-01-30T07:33:35+00:00"
+        },
+        {
+            "name": "hyperf/db",
+            "version": "v2.2.19",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hyperf/db.git",
+                "reference": "312989eb25b9eb7f60828dc3769300f9360d4a8c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hyperf/db/zipball/312989eb25b9eb7f60828dc3769300f9360d4a8c",
+                "reference": "312989eb25b9eb7f60828dc3769300f9360d4a8c",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "hyperf/config": "~2.2.0",
+                "hyperf/contract": "~2.2.0",
+                "hyperf/pool": "~2.2.0",
+                "hyperf/utils": "~2.2.0",
+                "php": ">=7.2",
+                "psr/container": "^1.0|^2.0"
+            },
+            "suggest": {
+                "ext-swoole": "Required to use Swoole Coroutine MySQL."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev"
+                },
+                "hyperf": {
+                    "config": "Hyperf\\DB\\ConfigProvider"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Hyperf\\DB\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "keywords": [
+                "hyperf",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/hyperf/db/issues",
+                "source": "https://github.com/hyperf/db/tree/v2.2.19"
+            },
+            "time": "2021-12-02T01:29:46+00:00"
         },
         {
             "name": "hyperf/db-connection",
