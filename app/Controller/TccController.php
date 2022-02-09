@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use DtmClient\Api\ApiInterface;
-use DtmClient\Middleware\BarrierMiddleware;
+use DtmClient\Middleware\DtmMiddleware;
 use DtmClient\TCC;
 use DtmClient\TransContext;
 use Hyperf\Di\Annotation\Inject;
@@ -87,7 +87,7 @@ class TccController extends AbstractController
     }
 
     #[PostMapping(path: 'transA/try')]
-    #[Middleware(BarrierMiddleware::class)]
+    #[Middleware(DtmMiddleware::class)]
     public function transATry(RequestInterface $request): array
     {
         return [
@@ -96,7 +96,7 @@ class TccController extends AbstractController
     }
 
     #[PostMapping(path: 'transA/confirm')]
-    #[Middleware(BarrierMiddleware::class)]
+    #[Middleware(DtmMiddleware::class)]
     #[Barrier]
     public function transAConfirm(RequestInterface $request): array
     {
@@ -106,7 +106,7 @@ class TccController extends AbstractController
     }
 
     #[PostMapping(path: 'transA/cancel')]
-    #[Middleware(BarrierMiddleware::class)]
+    #[Middleware(DtmMiddleware::class)]
     #[Barrier]
     public function transACancel(RequestInterface $request): array
     {
@@ -116,7 +116,7 @@ class TccController extends AbstractController
     }
 
     #[PostMapping(path: 'transB/try')]
-    #[Middleware(BarrierMiddleware::class)]
+    #[Middleware(DtmMiddleware::class)]
     public function transBTry(): array
     {
         return [
@@ -125,7 +125,7 @@ class TccController extends AbstractController
     }
 
     #[PostMapping(path: 'transB/try/fail')]
-    #[Middleware(BarrierMiddleware::class)]
+    #[Middleware(DtmMiddleware::class)]
     #[Barrier]
     public function transBTryFail(ResponseInterface $response)
     {
@@ -133,7 +133,7 @@ class TccController extends AbstractController
     }
 
     #[PostMapping(path: 'transB/confirm')]
-    #[Middleware(BarrierMiddleware::class)]
+    #[Middleware(DtmMiddleware::class)]
     #[Barrier]
     public function transBConfirm(): array
     {
@@ -143,7 +143,7 @@ class TccController extends AbstractController
     }
 
     #[PostMapping(path: 'transB/cancel')]
-    #[Middleware(BarrierMiddleware::class)]
+    #[Middleware(DtmMiddleware::class)]
     #[Barrier]
     public function transBCancel(): array
     {
