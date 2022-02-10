@@ -15,8 +15,17 @@ return [
     'barrier' => [
         'db' => [
             'type' => DbType::MySQL
-        ]
+        ],
+        'redis' => [
+            'expire_seconds' => 7 * 86400,
+        ],
+        'apply' => [
+            \App\Controller\TccController::class . '::transBConfirm',
+            'App\Controller\TccController::transBCancel',
+        ],
     ],
+    'protocol' => Protocol::HTTP,
+    'server' => '127.0.0.1',
     'port' => [
         'http' => 36789,
         'grpc' => 36790,
