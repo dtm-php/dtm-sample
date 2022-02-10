@@ -13,6 +13,7 @@ return [
         ],
         'ignore_annotations' => [
             'mixin',
+            'type'
         ],
     ],
 ];

@@ -14,4 +14,7 @@ return [
         ShowRequestMiddleware::class,
         DtmMiddleware::class,
     ],
+    'grpc' => [
+        ShowRequestMiddleware::class,
+    ],
 ];
