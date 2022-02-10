@@ -134,7 +134,6 @@ class TccController extends AbstractController
 
     #[PostMapping(path: 'transB/confirm')]
     #[Middleware(DtmMiddleware::class)]
-    #[Barrier]
     public function transBConfirm(): array
     {
         return [
@@ -144,7 +143,6 @@ class TccController extends AbstractController
 
     #[PostMapping(path: 'transB/cancel')]
     #[Middleware(DtmMiddleware::class)]
-    #[Barrier]
     public function transBCancel(): array
     {
         return [
