@@ -12,6 +12,10 @@ use DtmClient\Constants\DbType;
 return [
     'protocol' => Protocol::GRPC,
     'server' => '127.0.0.1',
+    'port' => [
+        'http' => 36789,
+        'grpc' => 36790,
+    ],
     'barrier' => [
         'db' => [
             'type' => DbType::MySQL
@@ -23,12 +27,6 @@ return [
             \App\Controller\TccController::class . '::transBConfirm',
             'App\Controller\TccController::transBCancel',
         ],
-    ],
-    'protocol' => Protocol::HTTP,
-    'server' => '127.0.0.1',
-    'port' => [
-        'http' => 36789,
-        'grpc' => 36790,
     ],
     'guzzle' => [
         'options' => [],
