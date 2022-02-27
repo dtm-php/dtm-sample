@@ -13,8 +13,10 @@ use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middleware;
 use Hyperf\HttpServer\Annotation\RequestMapping;
+use Hyperf\RpcServer\Annotation\RpcService;
 
-#[Controller(prefix: '/tcc-json-rpc')]
+#[Controller(prefix: '/tcc_json_rpc')]
+#[RpcService(name: 'TccJsonRpc', protocol: 'jsonrpc-http', server: 'jsonrpc-http')]
 class TccJsonRpcController
 {
     #[Inject]
@@ -23,7 +25,7 @@ class TccJsonRpcController
     #[Inject]
     protected ApiInterface $api;
 
-    protected string $serviceApi = '127.0.0.1:9503/tcc-json-rpc/';
+    protected string $serviceApi = 'TccJsonRpc.';
 
     #[RequestMapping(path: 'gid')]
     public function getGid()
@@ -38,17 +40,18 @@ class TccJsonRpcController
             $body = [
                 'Amount' => 30,
             ];
+
             $tcc->callBranch(
                 $body,
-                $this->serviceApi . 'TransOutTcc',
-                $this->serviceApi . 'TransOutConfirm',
-                $this->serviceApi . 'TransOutRevert'
+                $this->serviceApi . 'transOutTcc',
+                $this->serviceApi . 'transOutConfirm',
+                $this->serviceApi . 'transOutRevert'
             );
             $tcc->callBranch(
                 $body,
-                $this->serviceApi . 'TransInTcc',
-                $this->serviceApi . 'TransInConfirm',
-                $this->serviceApi . 'TransInRevert'
+                $this->serviceApi . 'transInTcc',
+                $this->serviceApi . 'transInConfirm',
+                $this->serviceApi . 'transInRevert'
             );
         });
         return 'success';
@@ -59,7 +62,10 @@ class TccJsonRpcController
     #[Barrier]
     public function transOutTcc(BusiReq $request)
     {
-        return new BusiReply();
+        return [
+            'dtm_result' => 'SUCCESS',
+            'method' => 'transOutTcc'
+        ];
     }
 
     #[RequestMapping(path: 'transOutConfirm')]
@@ -67,7 +73,10 @@ class TccJsonRpcController
     #[Barrier]
     public function transOutConfirm(BusiReq $request)
     {
-        return new BusiReply();
+        return [
+            'dtm_result' => 'SUCCESS',
+            'method' => 'transOutConfirm'
+        ];
     }
 
     #[RequestMapping(path: 'transOutCancel')]
@@ -75,7 +84,10 @@ class TccJsonRpcController
     #[Barrier]
     public function transOutCancel(BusiReq $request)
     {
-        return new BusiReply();
+        return [
+            'dtm_result' => 'SUCCESS',
+            'method' => 'transOutCancel'
+        ];
     }
 
     #[RequestMapping(path: 'transInTcc')]
@@ -83,7 +95,10 @@ class TccJsonRpcController
     #[Barrier]
     public function transInTcc(BusiReq $request)
     {
-        return new BusiReply();
+        return [
+            'dtm_result' => 'SUCCESS',
+            'method' => 'transInTcc'
+        ];
     }
 
     #[RequestMapping(path: 'transInConfirm')]
@@ -91,7 +106,10 @@ class TccJsonRpcController
     #[Barrier]
     public function transInConfirm(BusiReq $request)
     {
-        return new BusiReply();
+        return [
+            'dtm_result' => 'SUCCESS',
+            'method' => 'transInConfirm'
+        ];
     }
 
     #[RequestMapping(path: 'transInCancel')]
@@ -99,6 +117,9 @@ class TccJsonRpcController
     #[Barrier]
     public function transInCancel(BusiReq $request)
     {
-        return new BusiReply();
+        return [
+            'dtm_result' => 'SUCCESS',
+            'method' => 'transInCancel'
+        ];
     }
 }

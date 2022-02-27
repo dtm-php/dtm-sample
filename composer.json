@@ -30,7 +30,8 @@
         "hyperf/memory": "~2.2.0",
         "hyperf/process": "~2.2.0",
         "hyperf/redis": "~2.2.0",
-        "hyperf/rpc-client": "^2.2"
+        "hyperf/rpc-client": "^2.2",
+        "hyperf/rpc-server": "^2.2"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",

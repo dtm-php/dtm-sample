@@ -1,11 +1,5 @@
 <?php
 
-use DtmClient\Api\JsonRpcHttpApi;
-
-$nodes = [
-    ['host' => '127.0.0.1', 'port' => 36791],
-];
-
 $options = [
     'connect_timeout' => 5.0,
     'recv_timeout' => 5.0,
@@ -53,7 +47,26 @@ return [
             // 这个消费者要从哪个服务中心获取节点信息，如不配置则不会从服务中心获取节点信息
             'registry' => $registry,
             // 如果没有指定上面的 registry 配置，即为直接对指定的节点进行消费，通过下面的 nodes 参数来配置服务提供者的节点信息
-            'nodes' => $nodes,
+            'nodes' => [
+                ['host' => '127.0.0.1', 'port' => 36789, 'path' => '/api/json-rpc'],
+            ],
+            // 配置项，会影响到 Packer 和 Transporter
+            'options' => $options,
+        ],
+        [
+            // name 需与服务提供者的 name 属性相同
+            'name' => 'TccJsonRpc',
+            // 服务提供者的服务协议，可选，默认值为 jsonrpc-http
+            // 可选 jsonrpc-http jsonrpc jsonrpc-tcp-length-check
+            'protocol' => 'jsonrpc-http',
+            // 负载均衡算法，可选，默认值为 random
+            'load_balancer' => 'random',
+            // 这个消费者要从哪个服务中心获取节点信息，如不配置则不会从服务中心获取节点信息
+            'registry' => $registry,
+            // 如果没有指定上面的 registry 配置，即为直接对指定的节点进行消费，通过下面的 nodes 参数来配置服务提供者的节点信息
+            'nodes' => [
+                ['host' => '127.0.0.1', 'port' => 9504],
+            ],
             // 配置项，会影响到 Packer 和 Transporter
             'options' => $options,
         ]

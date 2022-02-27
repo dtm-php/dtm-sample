@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ec1800ea971129944ab7ecabff75f078",
+    "content-hash": "f90e02785c0e5edd75069b56efee73c2",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -344,7 +344,7 @@
             "dist": {
                 "type": "path",
                 "url": "../dtm-client",
-                "reference": "50bbebfad9554151cdfa4a359432ec0d6dc108bf"
+                "reference": "c76a929aeaf8cde16dd86af588b7f5bebea39613"
             },
             "require": {
                 "ext-json": "*",
@@ -367,6 +367,7 @@
                 "hyperf/db": "^2,2",
                 "hyperf/di": "^2.2",
                 "hyperf/grpc-client": "^2.2",
+                "hyperf/json-rpc": "^2.2",
                 "hyperf/redis": "^2,2",
                 "hyperf/rpc-client": "^2.2"
             },
@@ -2125,16 +2126,16 @@
         },
         {
             "name": "hyperf/json-rpc",
-            "version": "v2.2.14",
+            "version": "v2.2.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hyperf/json-rpc.git",
-                "reference": "c6623b3a6c28912a9a62cd67936b4a74e0bc8514"
+                "reference": "bbaff1741d80025581534e083d77c311a937c925"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hyperf/json-rpc/zipball/c6623b3a6c28912a9a62cd67936b4a74e0bc8514",
-                "reference": "c6623b3a6c28912a9a62cd67936b4a74e0bc8514",
+                "url": "https://api.github.com/repos/hyperf/json-rpc/zipball/bbaff1741d80025581534e083d77c311a937c925",
+                "reference": "bbaff1741d80025581534e083d77c311a937c925",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -2191,7 +2192,7 @@
                 "pull-request": "https://github.com/hyperf/hyperf/pulls",
                 "source": "https://github.com/hyperf/hyperf"
             },
-            "time": "2021-10-28T10:13:44+00:00"
+            "time": "2022-02-18T01:58:04+00:00"
         },
         {
             "name": "hyperf/load-balancer",
@@ -2801,6 +2802,69 @@
                 "source": "https://github.com/hyperf/hyperf"
             },
             "time": "2021-11-12T11:07:43+00:00"
+        },
+        {
+            "name": "hyperf/rpc-server",
+            "version": "v2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hyperf/rpc-server.git",
+                "reference": "17d1fc0522ecd53473ed9ffd9ae6b7d631e2465d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hyperf/rpc-server/zipball/17d1fc0522ecd53473ed9ffd9ae6b7d631e2465d",
+                "reference": "17d1fc0522ecd53473ed9ffd9ae6b7d631e2465d",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "hyperf/http-server": "~2.2.0",
+                "hyperf/rpc": "~2.2.0",
+                "php": ">=7.2"
+            },
+            "suggest": {
+                "hyperf/di": "Required to use annotations."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev"
+                },
+                "hyperf": {
+                    "config": "Hyperf\\RpcServer\\ConfigProvider"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Hyperf\\RpcServer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "An abstract rpc server component for Hyperf.",
+            "homepage": "https://hyperf.io",
+            "keywords": [
+                "hyperf",
+                "php",
+                "rpc",
+                "rpc-server",
+                "swoole"
+            ],
+            "support": {
+                "docs": "https://hyperf.wiki",
+                "issues": "https://github.com/hyperf/hyperf/issues",
+                "pull-request": "https://github.com/hyperf/hyperf/pulls",
+                "source": "https://github.com/hyperf/hyperf"
+            },
+            "time": "2021-07-18T06:50:14+00:00"
         },
         {
             "name": "hyperf/server",
