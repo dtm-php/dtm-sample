@@ -10,7 +10,7 @@ use DtmClient\Constants\Protocol;
 use DtmClient\Constants\DbType;
 
 return [
-    'protocol' => Protocol::GRPC,
+    'protocol' => Protocol::HTTP,
     'server' => '127.0.0.1',
     'port' => [
         'http' => 36789,

@@ -22,7 +22,6 @@ use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
 use Throwable;
 
-#[Controller(prefix: '/tcc')]
 class TccController extends AbstractController
 {
     #[Inject]
@@ -31,9 +30,9 @@ class TccController extends AbstractController
     #[Inject]
     protected ApiInterface $api;
 
-    #[GetMapping(path: 'successCase')]
     public function successCase()
     {
+
         try {
             $this->tcc->globalTransaction(function (TCC $tcc) {
                 $tcc->callBranch(
@@ -55,14 +54,12 @@ class TccController extends AbstractController
         return TransContext::getGid();
     }
 
-    #[GetMapping(path: 'query_all')]
     public function queryAllCase()
     {
         $result = $this->api->queryAll(['last_id' => '']);
         var_dump($result);
     }
 
-    #[GetMapping(path: 'rollbackCase')]
     public function rollbackCase()
     {
         try {
@@ -86,8 +83,6 @@ class TccController extends AbstractController
         }
     }
 
-    #[PostMapping(path: 'transA/try')]
-    #[Middleware(DtmMiddleware::class)]
     public function transATry(RequestInterface $request): array
     {
         return [
@@ -95,8 +90,6 @@ class TccController extends AbstractController
         ];
     }
 
-    #[PostMapping(path: 'transA/confirm')]
-    #[Middleware(DtmMiddleware::class)]
     #[Barrier]
     public function transAConfirm(RequestInterface $request): array
     {
@@ -105,8 +98,6 @@ class TccController extends AbstractController
         ];
     }
 
-    #[PostMapping(path: 'transA/cancel')]
-    #[Middleware(DtmMiddleware::class)]
     #[Barrier]
     public function transACancel(RequestInterface $request): array
     {
@@ -115,8 +106,6 @@ class TccController extends AbstractController
         ];
     }
 
-    #[PostMapping(path: 'transB/try')]
-    #[Middleware(DtmMiddleware::class)]
     public function transBTry(): array
     {
         return [
@@ -124,16 +113,12 @@ class TccController extends AbstractController
         ];
     }
 
-    #[PostMapping(path: 'transB/try/fail')]
-    #[Middleware(DtmMiddleware::class)]
     #[Barrier]
     public function transBTryFail(ResponseInterface $response)
     {
         return $response->withStatus(409);
     }
 
-    #[PostMapping(path: 'transB/confirm')]
-    #[Middleware(DtmMiddleware::class)]
     public function transBConfirm(): array
     {
         return [
@@ -141,8 +126,6 @@ class TccController extends AbstractController
         ];
     }
 
-    #[PostMapping(path: 'transB/cancel')]
-    #[Middleware(DtmMiddleware::class)]
     public function transBCancel(): array
     {
         return [
