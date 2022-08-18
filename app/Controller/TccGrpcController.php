@@ -11,12 +11,15 @@ namespace App\Controller;
 use App\Grpc\GrpcClient;
 use App\Grpc\Message\BusiReply;
 use App\Grpc\Message\BusiReq;
+use DtmClient\Annotation\Barrier;
+use DtmClient\Middleware\DtmMiddleware;
 use DtmClient\TCC;
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
+use Hyperf\HttpServer\Annotation\Middleware;
 
 #[Controller(prefix: '/tcc-grpc')]
 class TccGrpcController
@@ -65,31 +68,43 @@ class TccGrpcController
         return 'success';
     }
 
+    #[Middleware(middleware: DtmMiddleware::class)]
+    #[Barrier]
     public function transOutTcc(BusiReq $request)
     {
         return new BusiReply();
     }
 
+    #[Middleware(middleware: DtmMiddleware::class)]
+    #[Barrier]
     public function transOutConfirm(BusiReq $request)
     {
         return new BusiReply();
     }
 
+    #[Middleware(middleware: DtmMiddleware::class)]
+    #[Barrier]
     public function transOutCancel(BusiReq $request)
     {
         return new BusiReply();
     }
 
+    #[Middleware(middleware: DtmMiddleware::class)]
+    #[Barrier]
     public function transInTcc(BusiReq $request)
     {
         return new BusiReply();
     }
 
+    #[Middleware(middleware: DtmMiddleware::class)]
+    #[Barrier]
     public function transInConfirm(BusiReq $request)
     {
         return new BusiReply();
     }
 
+    #[Middleware(middleware: DtmMiddleware::class)]
+    #[Barrier]
     public function transInCancel(BusiReq $request)
     {
         return new BusiReply();
