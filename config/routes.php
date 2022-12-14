@@ -18,6 +18,7 @@ Router::addServer('grpc', function () {
         Router::post('/TransInConfirm', 'App\Controller\TccGrpcController@transInConfirm');
         Router::post('/TransInRevert', 'App\Controller\TccGrpcController@transInRevert');
     });
+//    , ['middleware' => [\DtmClient\Middleware\DtmMiddleware::class]]
 });
 
 Router::addGroup('/tcc', function () {

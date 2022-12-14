@@ -8,6 +8,7 @@ declare(strict_types=1);
  */
 namespace App\Listener;
 
+use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\Database\Events\QueryExecuted;
 use Hyperf\Event\Annotation\Listener;
 use Hyperf\Event\Contract\ListenerInterface;
@@ -29,7 +30,8 @@ class DbQueryExecutedListener implements ListenerInterface
 
     public function __construct(ContainerInterface $container)
     {
-        $this->logger = $container->get(LoggerFactory::class)->get('sql');
+//        $this->logger = $container->get(LoggerFactory::class)->get('sql');
+        $this->logger = $container->get(StdoutLoggerInterface::class);
     }
 
     public function listen(): array
